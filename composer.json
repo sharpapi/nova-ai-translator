@@ -1,0 +1,59 @@
+{
+    "name": "sharpapi/nova-ai-translator",
+    "keywords": [
+        "laravel",
+        "nova",
+        "ai translation",
+        "automatic translation",
+        "sharpapi",
+        "spatie translatable",
+        "laravel nova"
+    ],
+    "homepage": "https://github.com/sharpapi/nova-ai-translator",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Dawid Makowski",
+            "email": "contact@sharpapi.com",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": ">=8.0",
+        "ext-readline": "*",
+        "laravel/framework": "^9.0|^10.0|^11.0",
+        "laravel/nova": "^4.0",
+        "sharpapi/sharpapi-laravel-client": "^1.2.1",
+        "spatie/laravel-translatable": "^6.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.0|^10.0|^11.0|^12.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "SharpAPI\\NovaAiTranslator\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "SharpAPI\\NovaAiTranslator\\Tests\\": "tests"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+            ]
+        }
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "repositories": {
+        "nova": {
+            "type": "composer",
+            "url": "https://nova.laravel.com"
+        }
+    }
+}
