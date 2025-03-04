@@ -21,9 +21,9 @@
     "require": {
         "php": ">=8.0",
         "ext-readline": "*",
-        "laravel/framework": "^9.0|^10.0|^11.0",
-        "laravel/nova": "^4.0",
-        "sharpapi/sharpapi-laravel-client": "^1.2.1",
+        "laravel/framework": "^9.0|^10.0|^11.0|^12.0",
+        "laravel/nova": "^4.0|^5.0",
+        "sharpapi/sharpapi-laravel-client": "^1.2.4",
         "spatie/laravel-translatable": "^6.0"
     },
     "require-dev": {
