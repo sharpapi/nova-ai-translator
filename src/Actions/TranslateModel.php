@@ -15,6 +15,7 @@ use Laravel\Nova\Fields\FormData;
 use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Trix;
 use Laravel\Nova\Http\Requests\NovaRequest;
+use SharpAPI\Core\Exceptions\ApiException;
 use SharpAPI\SharpApiService\Enums\SharpApiVoiceTone;
 use SharpAPI\SharpApiService\SharpApiService;
 use Spatie\Translatable\HasTranslations;
@@ -34,12 +35,14 @@ class TranslateModel extends Action implements ShouldQueue
      * Handle the translation action
      *
      * @throws GuzzleException
+     * @throws ApiException
      */
     public function handle(ActionFields $fields, $models): ActionResponse|Action
     {
         set_time_limit(600);
         // Verify that the locales configuration exists
         $localesConfig = config('app.locales');
+
         if (! $localesConfig || ! is_array($localesConfig)) {
             $this->fail("The language configuration is missing in 'config/app.php'.".
                 "Please define 'locales' with supported languages.");
@@ -98,7 +101,7 @@ class TranslateModel extends Action implements ShouldQueue
     /**
      * Translate model fields
      *
-     * @throws GuzzleException
+     * @throws GuzzleException|ApiException
      */
     private function translateModelFields(
         $model,
@@ -125,7 +128,7 @@ class TranslateModel extends Action implements ShouldQueue
     /**
      * Perform the translation by calling SharpApiService
      *
-     * @throws GuzzleException
+     * @throws GuzzleException|ApiException
      */
     private function translateText(
         string $text,
@@ -186,10 +189,21 @@ class TranslateModel extends Action implements ShouldQueue
                         $sourceLang = $formData->source_lang;
                         $targetLang = $formData->target_lang;
 
-                        $modelClass = $request->findModelQuery()->getModel();
-                        $translatableFields = in_array(HasTranslations::class, class_uses($modelClass))
-                            ? $modelClass->getTranslatableAttributes()
-                            : [];
+                        // Null-safe fallback for batch requests
+                        $translatableFields = [];
+
+                        try {
+                            $modelQuery = $request->findModelQuery();
+                            if ($modelQuery) {
+                                $modelClass = $modelQuery->getModel();
+                                if ($modelClass && in_array(HasTranslations::class, class_uses($modelClass))) {
+                                    $translatableFields = $modelClass->getTranslatableAttributes();
+                                }
+                            }
+                        } catch (\Throwable $e) {
+                            // fallback for batch requests with no model context
+                            $translatableFields = ['title', 'subtitle', 'content']; // or leave empty if uncertain
+                        }
 
                         if ($sourceLang && $targetLang) {
                             $sourceLangName = $locales[$sourceLang] ?? ucfirst($sourceLang);
@@ -197,13 +211,7 @@ class TranslateModel extends Action implements ShouldQueue
                             $field->value =
                                 "Fields to be translated from <b>$sourceLangName</b> to <b>$targetLangName</b>:".
                                 "<ul style='padding-left: 20px;'>".
-                                implode(
-                                    '',
-                                    array_map(
-                                        fn ($field) => "<li>$field</li>",
-                                        $translatableFields
-                                    )
-                                ).
+                                implode('', array_map(fn ($f) => "<li>$f</li>", $translatableFields)).
                                 '</ul><br />'.
                                 "<em>If any field above already contains content in $targetLangName, translation for it will be ignored.</em>";
                         } else {
