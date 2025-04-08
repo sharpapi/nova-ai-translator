@@ -1,5 +1,8 @@
 # SharpAPI AI Translator for Laravel Nova
 
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/sharpapi/nova-ai-translator.svg?style=flat-square)](https://packagist.org/packages/sharpapi/nova-ai-translator)
+[![Total Downloads](https://img.shields.io/packagist/dt/sharpapi/nova-ai-translator.svg?style=flat-square)](https://packagist.org/packages/sharpapi/nova-ai-translator)
+
 Welcome to **SharpAPI AI Translator for Laravel Nova** – the package that’s here to make your content translation smoother and smarter with the power of SharpAPI's [Advanced Text Translator AI API](https://sharpapi.com/en/catalog/ai/content-marketing-automation/advanced-text-translator) and to leverage [AI for Laravel](https://SharpAPI.com/). This package extends the already-awesome [Spatie's `laravel-translatable`](https://spatie.be/docs/laravel-translatable/) with a Nova action you can trigger from your resource’s edit or list views.
 
 `🤖 Initiate AI Translation` can be run from either:
