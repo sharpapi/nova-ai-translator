@@ -15,8 +15,8 @@ use Laravel\Nova\Fields\FormData;
 use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Trix;
 use Laravel\Nova\Http\Requests\NovaRequest;
-use SharpAPI\Core\Exceptions\ApiException;
 use SharpAPI\ContentTranslate\ContentTranslateService;
+use SharpAPI\Core\Exceptions\ApiException;
 use SharpAPI\NovaAiTranslator\Enums\SharpApiVoiceTone;
 use Spatie\Translatable\HasTranslations;
 
