@@ -16,8 +16,8 @@ use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Trix;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use SharpAPI\Core\Exceptions\ApiException;
-use SharpAPI\SharpApiService\Enums\SharpApiVoiceTone;
-use SharpAPI\SharpApiService\SharpApiService;
+use SharpAPI\ContentTranslate\ContentTranslateService;
+use SharpAPI\NovaAiTranslator\Enums\SharpApiVoiceTone;
 use Spatie\Translatable\HasTranslations;
 
 /**
@@ -49,7 +49,7 @@ class TranslateModel extends Action implements ShouldQueue
         }
 
         // Check if the SharpAPI client API key is set
-        $apiKey = config('sharpapi-client.api_key');
+        $apiKey = config('sharpapi-content-translate.api_key');
         if (empty($apiKey)) {
             $this->fail('The SharpAPI client API key is not configured. '.
                 "Please set 'SHARP_API_KEY' in '.env'.");
@@ -138,7 +138,7 @@ class TranslateModel extends Action implements ShouldQueue
     ): string {
         $fromLanguage = config('app.locales')[$sourceLang];
         $toLanguage = config('app.locales')[$targetLang];
-        $sharpApiService = new SharpApiService;
+        $sharpApiService = new ContentTranslateService;
 
         $jobUrl = $sharpApiService->translate(
             $text,

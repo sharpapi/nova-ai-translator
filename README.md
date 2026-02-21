@@ -19,7 +19,7 @@ Here's the form you’ll use to dispatch the translation:
 
 - **Laravel**: ^9.0+
 - **Laravel Nova**: 4.0+
-- **PHP**: 8.0+
+- **PHP**: 8.1+
 - **spatie/laravel-translatable**: used for detecting translatable fields
 
 ## Installation & Configuration
