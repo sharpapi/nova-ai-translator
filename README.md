@@ -17,7 +17,7 @@ Here's the form you’ll use to dispatch the translation:
 
 ## Requirements
 
-- **Laravel**: ^9.0+
+- **Laravel**: ^10.48.29+
 - **Laravel Nova**: 4.0+
 - **PHP**: 8.1+
 - **spatie/laravel-translatable**: used for detecting translatable fields
