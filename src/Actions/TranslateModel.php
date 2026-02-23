@@ -196,13 +196,23 @@ class TranslateModel extends Action implements ShouldQueue
                             $modelQuery = $request->findModelQuery();
                             if ($modelQuery) {
                                 $modelClass = $modelQuery->getModel();
-                                if ($modelClass && in_array(HasTranslations::class, class_uses($modelClass))) {
+                                if ($modelClass && in_array(HasTranslations::class, class_uses_recursive($modelClass))) {
                                     $translatableFields = $modelClass->getTranslatableAttributes();
                                 }
                             }
                         } catch (\Throwable $e) {
-                            // fallback for batch requests with no model context
-                            $translatableFields = ['title', 'subtitle', 'content']; // or leave empty if uncertain
+                            // Resolve translatable fields from the Nova resource when model query is unavailable
+                            try {
+                                $resourceClass = $request->resource();
+                                if ($resourceClass) {
+                                    $modelInstance = new $resourceClass::$model;
+                                    if (in_array(HasTranslations::class, class_uses_recursive($modelInstance))) {
+                                        $translatableFields = $modelInstance->getTranslatableAttributes();
+                                    }
+                                }
+                            } catch (\Throwable) {
+                                // leave $translatableFields as empty array from line 193
+                            }
                         }
 
                         if ($sourceLang && $targetLang) {
